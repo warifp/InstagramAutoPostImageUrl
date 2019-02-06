@@ -8,13 +8,13 @@ function download_img_from_url($randImageURL , $photopath) {
 	
 		$fileName = "$photopath";
 		$fileUrl  = "$randImageURL";
-		$ch = curl_init($fileUrl); // set the url to open and download
-		$fp = fopen($fileName, 'wb'); // open the local file pointer to save downloaded image
-		curl_setopt($ch, CURLOPT_FILE, $fp); // tell curl to save to the file pointer
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); // tell curl to follow redirects
-		curl_exec($ch); // fetch the image and save it with curl
-		curl_close($ch); // close curl
-		fclose($fp); // close the local file pointer
+		$ch = curl_init($fileUrl); 
+		$fp = fopen($fileName, 'wb'); 
+		curl_setopt($ch, CURLOPT_FILE, $fp);
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+		curl_exec($ch);
+		curl_close($ch); 
+		fclose($fp); 
 	
 }
 
