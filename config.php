@@ -1,4 +1,8 @@
 <?
+//@@ Author : Wahyu Arif P
+//@@ Date   : 07 Februari 2019
+//@@ File   : Instagram Auto Post URL
+
 $username = '####WAHYU ARIF P####'; // MASUKKAN USERNAME
 $password = '####WAHYU ARIF P####'; // MASUKKAN PASSWORD
 

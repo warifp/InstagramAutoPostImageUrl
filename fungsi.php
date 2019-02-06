@@ -1,4 +1,8 @@
 <?php
+//@@ Author : Wahyu Arif P
+//@@ Date   : 07 Februari 2019
+//@@ File   : Instagram Auto Post URL
+
 set_time_limit(0);
 date_default_timezone_set('UTC');
 require __DIR__.'/vendor/autoload.php';
