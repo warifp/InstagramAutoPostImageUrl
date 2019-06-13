@@ -18,7 +18,9 @@ use InstagramAPI\AutoPropertyMapper;
  * @method Attribution getAttribution()
  * @method mixed getBoostUnavailableReason()
  * @method mixed getBoostedStatus()
+ * @method bool getCanReply()
  * @method bool getCanReshare()
+ * @method bool getCanSeeInsightsAsBrand()
  * @method bool getCanViewMorePreviewComments()
  * @method bool getCanViewerReshare()
  * @method bool getCanViewerSave()
@@ -72,6 +74,7 @@ use InstagramAPI\AutoPropertyMapper;
  * @method string getImpressionToken()
  * @method Injected getInjected()
  * @method string getInlineComposerDisplayCondition()
+ * @method int getInlineComposerImpTriggerTime()
  * @method string getInventorySource()
  * @method IOSLinks[] getIosLinks()
  * @method mixed getIsAd4ad()
@@ -126,6 +129,7 @@ use InstagramAPI\AutoPropertyMapper;
  * @method string getSocialContext()
  * @method User[] getSponsorTags()
  * @method Stories getStories()
+ * @method StoryCountdowns[] getStoryCountdowns()
  * @method StoryCta[] getStoryCta()
  * @method mixed getStoryEvents()
  * @method mixed getStoryFeedMedia()
@@ -137,7 +141,8 @@ use InstagramAPI\AutoPropertyMapper;
  * @method mixed getStoryPollVoterInfos()
  * @method mixed getStoryPolls()
  * @method mixed getStoryProductItems()
- * @method mixed getStoryQuestions()
+ * @method StoryQuestionResponderInfos[] getStoryQuestionResponderInfos()
+ * @method StoryQuestions[] getStoryQuestions()
  * @method mixed getStorySliders()
  * @method mixed getStorySoundOn()
  * @method SuggestedUsers getSuggestedUsers()
@@ -156,6 +161,7 @@ use InstagramAPI\AutoPropertyMapper;
  * @method User getUser()
  * @method Usertag getUsertags()
  * @method float getValue()
+ * @method string getVideoCodec()
  * @method string getVideoDashManifest()
  * @method float getVideoDuration()
  * @method VideoVersions[] getVideoVersions()
@@ -175,7 +181,9 @@ use InstagramAPI\AutoPropertyMapper;
  * @method bool isAttribution()
  * @method bool isBoostUnavailableReason()
  * @method bool isBoostedStatus()
+ * @method bool isCanReply()
  * @method bool isCanReshare()
+ * @method bool isCanSeeInsightsAsBrand()
  * @method bool isCanViewMorePreviewComments()
  * @method bool isCanViewerReshare()
  * @method bool isCanViewerSave()
@@ -229,6 +237,7 @@ use InstagramAPI\AutoPropertyMapper;
  * @method bool isImpressionToken()
  * @method bool isInjected()
  * @method bool isInlineComposerDisplayCondition()
+ * @method bool isInlineComposerImpTriggerTime()
  * @method bool isInventorySource()
  * @method bool isIosLinks()
  * @method bool isIsAd4ad()
@@ -283,6 +292,7 @@ use InstagramAPI\AutoPropertyMapper;
  * @method bool isSocialContext()
  * @method bool isSponsorTags()
  * @method bool isStories()
+ * @method bool isStoryCountdowns()
  * @method bool isStoryCta()
  * @method bool isStoryEvents()
  * @method bool isStoryFeedMedia()
@@ -294,6 +304,7 @@ use InstagramAPI\AutoPropertyMapper;
  * @method bool isStoryPollVoterInfos()
  * @method bool isStoryPolls()
  * @method bool isStoryProductItems()
+ * @method bool isStoryQuestionResponderInfos()
  * @method bool isStoryQuestions()
  * @method bool isStorySliders()
  * @method bool isStorySoundOn()
@@ -313,6 +324,7 @@ use InstagramAPI\AutoPropertyMapper;
  * @method bool isUser()
  * @method bool isUsertags()
  * @method bool isValue()
+ * @method bool isVideoCodec()
  * @method bool isVideoDashManifest()
  * @method bool isVideoDuration()
  * @method bool isVideoVersions()
@@ -332,7 +344,9 @@ use InstagramAPI\AutoPropertyMapper;
  * @method $this setAttribution(Attribution $value)
  * @method $this setBoostUnavailableReason(mixed $value)
  * @method $this setBoostedStatus(mixed $value)
+ * @method $this setCanReply(bool $value)
  * @method $this setCanReshare(bool $value)
+ * @method $this setCanSeeInsightsAsBrand(bool $value)
  * @method $this setCanViewMorePreviewComments(bool $value)
  * @method $this setCanViewerReshare(bool $value)
  * @method $this setCanViewerSave(bool $value)
@@ -386,6 +400,7 @@ use InstagramAPI\AutoPropertyMapper;
  * @method $this setImpressionToken(string $value)
  * @method $this setInjected(Injected $value)
  * @method $this setInlineComposerDisplayCondition(string $value)
+ * @method $this setInlineComposerImpTriggerTime(int $value)
  * @method $this setInventorySource(string $value)
  * @method $this setIosLinks(IOSLinks[] $value)
  * @method $this setIsAd4ad(mixed $value)
@@ -440,6 +455,7 @@ use InstagramAPI\AutoPropertyMapper;
  * @method $this setSocialContext(string $value)
  * @method $this setSponsorTags(User[] $value)
  * @method $this setStories(Stories $value)
+ * @method $this setStoryCountdowns(StoryCountdowns[] $value)
  * @method $this setStoryCta(StoryCta[] $value)
  * @method $this setStoryEvents(mixed $value)
  * @method $this setStoryFeedMedia(mixed $value)
@@ -451,7 +467,8 @@ use InstagramAPI\AutoPropertyMapper;
  * @method $this setStoryPollVoterInfos(mixed $value)
  * @method $this setStoryPolls(mixed $value)
  * @method $this setStoryProductItems(mixed $value)
- * @method $this setStoryQuestions(mixed $value)
+ * @method $this setStoryQuestionResponderInfos(StoryQuestionResponderInfos[] $value)
+ * @method $this setStoryQuestions(StoryQuestions[] $value)
  * @method $this setStorySliders(mixed $value)
  * @method $this setStorySoundOn(mixed $value)
  * @method $this setSuggestedUsers(SuggestedUsers $value)
@@ -470,6 +487,7 @@ use InstagramAPI\AutoPropertyMapper;
  * @method $this setUser(User $value)
  * @method $this setUsertags(Usertag $value)
  * @method $this setValue(float $value)
+ * @method $this setVideoCodec(string $value)
  * @method $this setVideoDashManifest(string $value)
  * @method $this setVideoDuration(float $value)
  * @method $this setVideoVersions(VideoVersions[] $value)
@@ -489,7 +507,9 @@ use InstagramAPI\AutoPropertyMapper;
  * @method $this unsetAttribution()
  * @method $this unsetBoostUnavailableReason()
  * @method $this unsetBoostedStatus()
+ * @method $this unsetCanReply()
  * @method $this unsetCanReshare()
+ * @method $this unsetCanSeeInsightsAsBrand()
  * @method $this unsetCanViewMorePreviewComments()
  * @method $this unsetCanViewerReshare()
  * @method $this unsetCanViewerSave()
@@ -543,6 +563,7 @@ use InstagramAPI\AutoPropertyMapper;
  * @method $this unsetImpressionToken()
  * @method $this unsetInjected()
  * @method $this unsetInlineComposerDisplayCondition()
+ * @method $this unsetInlineComposerImpTriggerTime()
  * @method $this unsetInventorySource()
  * @method $this unsetIosLinks()
  * @method $this unsetIsAd4ad()
@@ -597,6 +618,7 @@ use InstagramAPI\AutoPropertyMapper;
  * @method $this unsetSocialContext()
  * @method $this unsetSponsorTags()
  * @method $this unsetStories()
+ * @method $this unsetStoryCountdowns()
  * @method $this unsetStoryCta()
  * @method $this unsetStoryEvents()
  * @method $this unsetStoryFeedMedia()
@@ -608,6 +630,7 @@ use InstagramAPI\AutoPropertyMapper;
  * @method $this unsetStoryPollVoterInfos()
  * @method $this unsetStoryPolls()
  * @method $this unsetStoryProductItems()
+ * @method $this unsetStoryQuestionResponderInfos()
  * @method $this unsetStoryQuestions()
  * @method $this unsetStorySliders()
  * @method $this unsetStorySoundOn()
@@ -627,6 +650,7 @@ use InstagramAPI\AutoPropertyMapper;
  * @method $this unsetUser()
  * @method $this unsetUsertags()
  * @method $this unsetValue()
+ * @method $this unsetVideoCodec()
  * @method $this unsetVideoDashManifest()
  * @method $this unsetVideoDuration()
  * @method $this unsetVideoVersions()
@@ -640,7 +664,7 @@ class Item extends AutoPropertyMapper
 {
     const PHOTO = 1;
     const VIDEO = 2;
-    const ALBUM = 8;
+    const CAROUSEL = 8;
 
     const JSON_PROPERTY_MAP = [
         /*
@@ -653,7 +677,7 @@ class Item extends AutoPropertyMapper
         'device_timestamp'                 => 'string',
         /*
          * A number describing what type of media this is. Should be compared
-         * against the `Item::PHOTO`, `Item::VIDEO` and `Item::ALBUM` constants!
+         * against the `Item::PHOTO`, `Item::VIDEO` and `Item::CAROUSEL` constants!
          */
         'media_type'                               => 'int',
         'dynamic_item_id'                          => 'string',
@@ -671,6 +695,7 @@ class Item extends AutoPropertyMapper
         'has_audio'                                => 'bool',
         'video_duration'                           => 'float',
         'user'                                     => 'User',
+        'can_see_insights_as_brand'                => 'bool',
         'caption'                                  => 'Caption',
         'title'                                    => 'string',
         'caption_is_edited'                        => 'bool',
@@ -684,8 +709,10 @@ class Item extends AutoPropertyMapper
         'is_dash_eligible'                         => 'int',
         'video_dash_manifest'                      => 'string',
         'number_of_qualities'                      => 'int',
+        'video_codec'                              => 'string',
         'thumbnails'                               => 'Thumbnail',
         'can_reshare'                              => 'bool',
+        'can_reply'                                => 'bool',
         'can_viewer_reshare'                       => 'bool',
         'visibility'                               => '',
         'attribution'                              => 'Attribution',
@@ -808,7 +835,9 @@ class Item extends AutoPropertyMapper
         'story_sliders'                               => '',
         'story_friend_lists'                          => '',
         'story_product_items'                         => '',
-        'story_questions'                             => '',
+        'story_questions'                             => 'StoryQuestions[]',
+        'story_question_responder_infos'              => 'StoryQuestionResponderInfos[]',
+        'story_countdowns'                            => 'StoryCountdowns[]',
         'story_music_stickers'                        => '',
         'supports_reel_reactions'                     => 'bool',
         'show_one_tap_fb_share_tooltip'               => 'bool',
@@ -823,6 +852,7 @@ class Item extends AutoPropertyMapper
         'timezone_offset'                             => 'int',
         'product_tags'                                => 'ProductTags',
         'inline_composer_display_condition'           => 'string',
+        'inline_composer_imp_trigger_time'            => 'int',
         'highlight_reel_ids'                          => 'string[]',
         'total_screenshot_count'                      => 'int',
         /*

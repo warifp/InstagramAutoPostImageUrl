@@ -7,33 +7,33 @@ use InstagramAPI\Response;
 /**
  * CreateLiveResponse.
  *
- * @method mixed getAllowResolutionChange()
- * @method mixed getAvcRtmpPayload()
+ * @method int getAllowResolutionChange()
+ * @method int getAvcRtmpPayload()
  * @method string getBroadcastId()
- * @method mixed getBroadcasterUpdateFrequency()
- * @method mixed getConnectWith_1rtt()
- * @method mixed getDisableSpeedTest()
- * @method mixed getHeartbeatInterval()
- * @method mixed getMaxTimeInSeconds()
+ * @method int getBroadcasterUpdateFrequency()
+ * @method int getConnectWith_1rtt()
+ * @method int getDisableSpeedTest()
+ * @method int getHeartbeatInterval()
+ * @method int getMaxTimeInSeconds()
  * @method mixed getMessage()
- * @method mixed getSpeedTestMinimumBandwidthThreshold()
- * @method mixed getSpeedTestRetryMaxCount()
- * @method mixed getSpeedTestRetryTimeDelay()
- * @method mixed getSpeedTestUiTimeout()
+ * @method int getSpeedTestMinimumBandwidthThreshold()
+ * @method int getSpeedTestRetryMaxCount()
+ * @method int getSpeedTestRetryTimeDelay()
+ * @method int getSpeedTestUiTimeout()
  * @method string getStatus()
- * @method mixed getStreamAudioBitRate()
- * @method mixed getStreamAudioChannels()
- * @method mixed getStreamAudioSampleRate()
- * @method mixed getStreamNetworkConnectionRetryCount()
- * @method mixed getStreamNetworkConnectionRetryDelayInSeconds()
- * @method mixed getStreamNetworkSpeedTestPayloadChunkSizeInBytes()
- * @method mixed getStreamNetworkSpeedTestPayloadSizeInBytes()
- * @method mixed getStreamNetworkSpeedTestPayloadTimeoutInSeconds()
+ * @method int getStreamAudioBitRate()
+ * @method int getStreamAudioChannels()
+ * @method int getStreamAudioSampleRate()
+ * @method int getStreamNetworkConnectionRetryCount()
+ * @method int getStreamNetworkConnectionRetryDelayInSeconds()
+ * @method int getStreamNetworkSpeedTestPayloadChunkSizeInBytes()
+ * @method int getStreamNetworkSpeedTestPayloadSizeInBytes()
+ * @method int getStreamNetworkSpeedTestPayloadTimeoutInSeconds()
  * @method mixed getStreamVideoAdaptiveBitrateConfig()
- * @method mixed getStreamVideoAllowBFrames()
- * @method mixed getStreamVideoBitRate()
- * @method mixed getStreamVideoFps()
- * @method mixed getStreamVideoWidth()
+ * @method int getStreamVideoAllowBFrames()
+ * @method int getStreamVideoBitRate()
+ * @method int getStreamVideoFps()
+ * @method int getStreamVideoWidth()
  * @method string getUploadUrl()
  * @method Model\_Message[] get_Messages()
  * @method bool isAllowResolutionChange()
@@ -65,33 +65,33 @@ use InstagramAPI\Response;
  * @method bool isStreamVideoWidth()
  * @method bool isUploadUrl()
  * @method bool is_Messages()
- * @method $this setAllowResolutionChange(mixed $value)
- * @method $this setAvcRtmpPayload(mixed $value)
+ * @method $this setAllowResolutionChange(int $value)
+ * @method $this setAvcRtmpPayload(int $value)
  * @method $this setBroadcastId(string $value)
- * @method $this setBroadcasterUpdateFrequency(mixed $value)
- * @method $this setConnectWith_1rtt(mixed $value)
- * @method $this setDisableSpeedTest(mixed $value)
- * @method $this setHeartbeatInterval(mixed $value)
- * @method $this setMaxTimeInSeconds(mixed $value)
+ * @method $this setBroadcasterUpdateFrequency(int $value)
+ * @method $this setConnectWith_1rtt(int $value)
+ * @method $this setDisableSpeedTest(int $value)
+ * @method $this setHeartbeatInterval(int $value)
+ * @method $this setMaxTimeInSeconds(int $value)
  * @method $this setMessage(mixed $value)
- * @method $this setSpeedTestMinimumBandwidthThreshold(mixed $value)
- * @method $this setSpeedTestRetryMaxCount(mixed $value)
- * @method $this setSpeedTestRetryTimeDelay(mixed $value)
- * @method $this setSpeedTestUiTimeout(mixed $value)
+ * @method $this setSpeedTestMinimumBandwidthThreshold(int $value)
+ * @method $this setSpeedTestRetryMaxCount(int $value)
+ * @method $this setSpeedTestRetryTimeDelay(int $value)
+ * @method $this setSpeedTestUiTimeout(int $value)
  * @method $this setStatus(string $value)
- * @method $this setStreamAudioBitRate(mixed $value)
- * @method $this setStreamAudioChannels(mixed $value)
- * @method $this setStreamAudioSampleRate(mixed $value)
- * @method $this setStreamNetworkConnectionRetryCount(mixed $value)
- * @method $this setStreamNetworkConnectionRetryDelayInSeconds(mixed $value)
- * @method $this setStreamNetworkSpeedTestPayloadChunkSizeInBytes(mixed $value)
- * @method $this setStreamNetworkSpeedTestPayloadSizeInBytes(mixed $value)
- * @method $this setStreamNetworkSpeedTestPayloadTimeoutInSeconds(mixed $value)
+ * @method $this setStreamAudioBitRate(int $value)
+ * @method $this setStreamAudioChannels(int $value)
+ * @method $this setStreamAudioSampleRate(int $value)
+ * @method $this setStreamNetworkConnectionRetryCount(int $value)
+ * @method $this setStreamNetworkConnectionRetryDelayInSeconds(int $value)
+ * @method $this setStreamNetworkSpeedTestPayloadChunkSizeInBytes(int $value)
+ * @method $this setStreamNetworkSpeedTestPayloadSizeInBytes(int $value)
+ * @method $this setStreamNetworkSpeedTestPayloadTimeoutInSeconds(int $value)
  * @method $this setStreamVideoAdaptiveBitrateConfig(mixed $value)
- * @method $this setStreamVideoAllowBFrames(mixed $value)
- * @method $this setStreamVideoBitRate(mixed $value)
- * @method $this setStreamVideoFps(mixed $value)
- * @method $this setStreamVideoWidth(mixed $value)
+ * @method $this setStreamVideoAllowBFrames(int $value)
+ * @method $this setStreamVideoBitRate(int $value)
+ * @method $this setStreamVideoFps(int $value)
+ * @method $this setStreamVideoWidth(int $value)
  * @method $this setUploadUrl(string $value)
  * @method $this set_Messages(Model\_Message[] $value)
  * @method $this unsetAllowResolutionChange()
@@ -129,29 +129,29 @@ class CreateLiveResponse extends Response
     const JSON_PROPERTY_MAP = [
         'broadcast_id'                                          => 'string',
         'upload_url'                                            => 'string',
-        'max_time_in_seconds'                                   => '',
-        'speed_test_ui_timeout'                                 => '',
-        'stream_network_speed_test_payload_chunk_size_in_bytes' => '',
-        'stream_network_speed_test_payload_size_in_bytes'       => '',
-        'stream_network_speed_test_payload_timeout_in_seconds'  => '',
-        'speed_test_minimum_bandwidth_threshold'                => '',
-        'speed_test_retry_max_count'                            => '',
-        'speed_test_retry_time_delay'                           => '',
-        'disable_speed_test'                                    => '',
-        'stream_video_allow_b_frames'                           => '',
-        'stream_video_width'                                    => '',
-        'stream_video_bit_rate'                                 => '',
-        'stream_video_fps'                                      => '',
-        'stream_audio_bit_rate'                                 => '',
-        'stream_audio_sample_rate'                              => '',
-        'stream_audio_channels'                                 => '',
-        'heartbeat_interval'                                    => '',
-        'broadcaster_update_frequency'                          => '',
+        'max_time_in_seconds'                                   => 'int',
+        'speed_test_ui_timeout'                                 => 'int',
+        'stream_network_speed_test_payload_chunk_size_in_bytes' => 'int',
+        'stream_network_speed_test_payload_size_in_bytes'       => 'int',
+        'stream_network_speed_test_payload_timeout_in_seconds'  => 'int',
+        'speed_test_minimum_bandwidth_threshold'                => 'int',
+        'speed_test_retry_max_count'                            => 'int',
+        'speed_test_retry_time_delay'                           => 'int',
+        'disable_speed_test'                                    => 'int',
+        'stream_video_allow_b_frames'                           => 'int',
+        'stream_video_width'                                    => 'int',
+        'stream_video_bit_rate'                                 => 'int',
+        'stream_video_fps'                                      => 'int',
+        'stream_audio_bit_rate'                                 => 'int',
+        'stream_audio_sample_rate'                              => 'int',
+        'stream_audio_channels'                                 => 'int',
+        'heartbeat_interval'                                    => 'int',
+        'broadcaster_update_frequency'                          => 'int',
         'stream_video_adaptive_bitrate_config'                  => '',
-        'stream_network_connection_retry_count'                 => '',
-        'stream_network_connection_retry_delay_in_seconds'      => '',
-        'connect_with_1rtt'                                     => '',
-        'avc_rtmp_payload'                                      => '',
-        'allow_resolution_change'                               => '',
+        'stream_network_connection_retry_count'                 => 'int',
+        'stream_network_connection_retry_delay_in_seconds'      => 'int',
+        'connect_with_1rtt'                                     => 'int',
+        'avc_rtmp_payload'                                      => 'int',
+        'allow_resolution_change'                               => 'int',
     ];
 }

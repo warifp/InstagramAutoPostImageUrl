@@ -18,7 +18,7 @@ class Creative extends RequestCollection
      * apply them MANUALLY via some external image/video editor or library!
      *
      * @param string     $stickerType Type of sticker (currently only "static_stickers").
-     * @param null|array $location    (optional) Array containing lat, lng and horizontalAccuracy.
+     * @param array|null $location    (optional) Array containing lat, lng and horizontalAccuracy.
      *
      * @throws \InvalidArgumentException
      * @throws \InstagramAPI\Exception\InstagramException
@@ -67,7 +67,7 @@ class Creative extends RequestCollection
             ->addPost('_uuid', $this->ig->uuid)
             ->addPost('_uid', $this->ig->account_id)
             ->addPost('_csrftoken', $this->ig->client->getToken())
-            ->addPost('aml_facetracker_model_version', 9)
+            ->addPost('aml_facetracker_model_version', 12)
             ->getResponse(new Response\FaceModelsResponse());
     }
 
@@ -79,17 +79,28 @@ class Creative extends RequestCollection
      * NOTE: The files are some strange binary format that only the Instagram
      * app understands. If anyone figures out the format, please contact us.
      *
+     * @param array|null $location (optional) Array containing lat, lng and horizontalAccuracy.
+     *
      * @throws \InstagramAPI\Exception\InstagramException
      *
      * @return \InstagramAPI\Response\FaceEffectsResponse
      */
-    public function getFaceEffects()
+    public function getFaceEffects(
+        array $location = null)
     {
-        return $this->ig->request('creatives/face_effects/')
+        $request = $this->ig->request('creatives/face_effects/')
             ->addPost('_uuid', $this->ig->uuid)
             ->addPost('_uid', $this->ig->account_id)
             ->addPost('_csrftoken', $this->ig->client->getToken())
-            ->addPost('supported_capabilities_new', json_encode(Constants::SUPPORTED_CAPABILITIES))
-            ->getResponse(new Response\FaceEffectsResponse());
+            ->addPost('supported_capabilities_new', json_encode(Constants::SUPPORTED_CAPABILITIES));
+
+        if ($location !== null) {
+            $request
+                ->addPost('lat', $location['lat'])
+                ->addPost('lng', $location['lng'])
+                ->addPost('horizontalAccuracy', $location['horizontalAccuracy']);
+        }
+
+        return $request->getResponse(new Response\FaceEffectsResponse());
     }
 }

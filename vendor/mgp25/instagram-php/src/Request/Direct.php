@@ -189,7 +189,7 @@ class Direct extends RequestCollection
      *
      * @param string      $mode        Either "reshare" or "raven".
      * @param bool        $showThreads Whether to include existing threads into response.
-     * @param null|string $query       (optional) The user to search for.
+     * @param string|null $query       (optional) The user to search for.
      *
      * @throws \InstagramAPI\Exception\InstagramException
      *
@@ -864,6 +864,7 @@ class Direct extends RequestCollection
      *                           of numerical UserPK IDs. To use an existing thread
      *                           instead, provide "thread" with the thread ID.
      * @param string $storyId    The story ID in Instagram's internal format (ie "3482384834_43294").
+     * @param string $reelId     The reel ID in Instagram's internal format (ie "highlight:12970012453081168")
      * @param array  $options    An associative array of additional parameters, including:
      *                           "media_type" (required) - either "photo" or "video";
      *                           "client_context" - predefined UUID used to prevent double-posting;
@@ -879,10 +880,20 @@ class Direct extends RequestCollection
     public function sendStory(
         array $recipients,
         $storyId,
+        $reelId = null,
         array $options = [])
     {
         if (!preg_match('#^\d+_\d+$#D', $storyId)) {
             throw new \InvalidArgumentException(sprintf('"%s" is not a valid story ID.', $storyId));
+        }
+        if ($reelId !== null) {
+            if (!preg_match('#^highlight:\d+$#D', $reelId)) {
+                throw new \InvalidArgumentException(sprintf('"%s" is not a valid reel ID.', $reelId));
+            }
+            $options = array_merge($options,
+                [
+                    'reel_id' => $reelId,
+                ]);
         }
         if (!isset($options['media_type'])) {
             throw new \InvalidArgumentException('Please provide media_type in options.');
@@ -893,6 +904,35 @@ class Direct extends RequestCollection
 
         return $this->_sendDirectItems('story_share', $recipients, array_merge($options, [
             'story_media_id' => $storyId,
+        ]));
+    }
+
+    /**
+     * Share an occurring or archived live stream via direct message to a user's inbox.
+     *
+     * You are able to share your own broadcasts, as well as broadcasts from
+     * other people.
+     *
+     * @param array  $recipients  An array with "users" or "thread" keys.
+     *                            To start a new thread, provide "users" as an array
+     *                            of numerical UserPK IDs. To use an existing thread
+     *                            instead, provide "thread" with the thread ID.
+     * @param string $broadcastId The broadcast ID in Instagram's internal format (ie "17854587811139572").
+     * @param array  $options     An associative array of optional parameters, including:
+     *                            "client_context" - predefined UUID used to prevent double-posting.
+     *
+     * @throws \InvalidArgumentException
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return Response\DirectSendItemResponse
+     */
+    public function sendLive(
+        array $recipients,
+        $broadcastId,
+        array $options = [])
+    {
+        return $this->_sendDirectItem('live', $recipients, array_merge($options, [
+            'broadcast_id' => $broadcastId,
         ]));
     }
 
@@ -1092,7 +1132,7 @@ class Direct extends RequestCollection
      * Send a direct message to specific users or thread.
      *
      * @param string $type       One of: "message", "like", "hashtag", "location", "profile", "photo",
-     *                           "video", "links".
+     *                           "video", "links", "live".
      * @param array  $recipients An array with "users" or "thread" keys.
      *                           To start a new thread, provide "users" as an array
      *                           of numerical UserPK IDs. To use an existing thread
@@ -1106,6 +1146,7 @@ class Direct extends RequestCollection
      *                           "photo" uses "client_context" and "filepath";
      *                           "video" uses "client_context", "upload_id" and "video_result";
      *                           "links" uses "client_context", "link_text" and "link_urls".
+     *                           "live" uses "client_context" and "text".
      *
      * @throws \InvalidArgumentException
      * @throws \InstagramAPI\Exception\InstagramException
@@ -1225,6 +1266,18 @@ class Direct extends RequestCollection
                 }
                 $request->addPost('node_type', $options['node_type']);
                 break;
+            case 'live':
+                $request = $this->ig->request('direct_v2/threads/broadcast/live_viewer_invite/');
+                // Check and set broadcast id.
+                if (!isset($options['broadcast_id'])) {
+                    throw new \InvalidArgumentException('No broadcast_id provided.');
+                }
+                $request->addPost('broadcast_id', $options['broadcast_id']);
+                // Set text if provided.
+                if (isset($options['text']) && strlen($options['text'])) {
+                    $request->addPost('text', $options['text']);
+                }
+                break;
             default:
                 throw new \InvalidArgumentException('Unsupported _sendDirectItem() type.');
         }
@@ -1315,6 +1368,10 @@ class Direct extends RequestCollection
                     throw new \InvalidArgumentException('No story_media_id provided.');
                 }
                 $request->addPost('story_media_id', $options['story_media_id']);
+                // Set text if provided.
+                if (isset($options['reel_id'])) {
+                    $request->addPost('reel_id', $options['reel_id']);
+                }
                 // Set text if provided.
                 if (isset($options['text']) && strlen($options['text'])) {
                     $request->addPost('text', $options['text']);

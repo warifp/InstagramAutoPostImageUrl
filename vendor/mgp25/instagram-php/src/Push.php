@@ -248,7 +248,7 @@ class Push implements EventEmitterInterface
             try {
                 $this->_instagram->push->register('mqtt', $token);
             } catch (\Exception $e) {
-                $this->emit('error', $e);
+                $this->emit('error', [$e]);
             }
             // Save the newly received token to the storage.
             // NOTE: We save it even if the registration failed, since we now

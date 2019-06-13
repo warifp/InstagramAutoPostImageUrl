@@ -20,7 +20,7 @@ class Location extends RequestCollection
      *
      * @param string      $latitude  Latitude.
      * @param string      $longitude Longitude.
-     * @param null|string $query     (optional) If provided, Instagram does a
+     * @param string|null $query     (optional) If provided, Instagram does a
      *                               worldwide location text search, but lists
      *                               locations closest to your lat/lng first.
      *
@@ -185,10 +185,13 @@ class Location extends RequestCollection
      * location is a very specific place such as a specific night club, it will
      * usually only include media from that exact location.
      *
-     * @param string      $locationId The internal ID of a location (from a field
-     *                                such as "pk", "external_id" or "facebook_places_id").
-     * @param string      $rankToken  The feed UUID. Use must use the same value for all pages of the feed.
-     * @param null|string $maxId      Next "maximum ID", used for pagination.
+     * @param string      $locationId   The internal ID of a location (from a field
+     *                                  such as "pk", "external_id" or "facebook_places_id").
+     * @param string      $rankToken    The feed UUID. Use must use the same value for all pages of the feed.
+     * @param string|null $tab          Section tab for locations. Values: "ranked" and "recent"
+     * @param int[]|null  $nextMediaIds Used for pagination.
+     * @param int|null    $nextPage     Used for pagination.
+     * @param string|null $maxId        Next "maximum ID", used for pagination.
      *
      * @throws \InvalidArgumentException
      * @throws \InstagramAPI\Exception\InstagramException
@@ -201,22 +204,64 @@ class Location extends RequestCollection
     public function getFeed(
         $locationId,
         $rankToken,
+        $tab = 'ranked',
+        $nextMediaIds = null,
+        $nextPage = null,
         $maxId = null)
     {
         Utils::throwIfInvalidRankToken($rankToken);
-        $locationFeed = $this->ig->request("feed/location/{$locationId}/")
-            ->addParam('rank_token', $rankToken);
+        if ($tab !== 'ranked' && $tab !== 'recent') {
+            throw new \InvalidArgumentException('The provided section tab is invalid.');
+        }
+
+        $locationFeed = $this->ig->request("locations/{$locationId}/sections/")
+            ->setSignedPost(false)
+            ->addPost('rank_token', $rankToken)
+            ->addPost('_uuid', $this->ig->uuid)
+            ->addPost('_csrftoken', $this->ig->client->getToken())
+            ->addPost('session_id', $this->ig->session_id)
+            ->addPost('tab', $tab);
+
+        if ($nextMediaIds !== null) {
+            if (!is_array($nextMediaIds) || !array_filter($nextMediaIds, 'is_int')) {
+                throw new \InvalidArgumentException('Next media IDs must be an Int[].');
+            }
+            $locationFeed->addPost('next_media_ids', json_encode($nextMediaIds));
+        }
+
+        if ($nextPage !== null) {
+            $locationFeed->addPost('page', $nextPage);
+        }
+
         if ($maxId !== null) {
-            $locationFeed->addParam('max_id', $maxId);
+            $locationFeed->addPost('max_id', $maxId);
         }
 
         return $locationFeed->getResponse(new Response\LocationFeedResponse());
     }
 
     /**
-     * Mark LocationFeedResponse story media items as seen.
+     * Get the story feed for a location.
      *
-     * The "story" property of a `LocationFeedResponse` only gives you a
+     * @param string $locationId The internal ID of a location (from a field
+     *                           such as "pk", "external_id" or "facebook_places_id").
+     *
+     * @throws \InvalidArgumentException
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\LocationStoryResponse
+     */
+    public function getStoryFeed(
+        $locationId)
+    {
+        return $this->ig->request("locations/{$locationId}/story/")
+            ->getResponse(new Response\LocationStoryResponse());
+    }
+
+    /**
+     * Mark LocationStoryResponse story media items as seen.
+     *
+     * The "story" property of a `LocationStoryResponse` only gives you a
      * list of story media. It doesn't actually mark any stories as "seen",
      * so the user doesn't know that you've seen their story. Actually
      * marking the story as "seen" is done via this endpoint instead. The
@@ -228,16 +273,16 @@ class Location extends RequestCollection
      * if you request the same location feed multiple times.
      *
      * Tip: You can pass in the whole "getItems()" array from the location's
-     * "story" property, to easily mark all of the LocationFeedResponse's story
+     * "story" property, to easily mark all of the LocationStoryResponse's story
      * media items as seen.
      *
-     * @param Response\LocationFeedResponse $locationFeed The location feed
-     *                                                    response object which
-     *                                                    the story media items
-     *                                                    came from. The story
-     *                                                    items MUST belong to it.
-     * @param Response\Model\Item[]         $items        Array of one or more
-     *                                                    story media Items.
+     * @param Response\LocationStoryResponse $locationFeed The location feed
+     *                                                     response object which
+     *                                                     the story media items
+     *                                                     came from. The story
+     *                                                     items MUST belong to it.
+     * @param Response\Model\Item[]          $items        Array of one or more
+     *                                                     story media Items.
      *
      * @throws \InvalidArgumentException
      * @throws \InstagramAPI\Exception\InstagramException
@@ -248,7 +293,7 @@ class Location extends RequestCollection
      * @see Hashtag::markStoryMediaSeen()
      */
     public function markStoryMediaSeen(
-        Response\LocationFeedResponse $locationFeed,
+        Response\LocationStoryResponse $locationFeed,
         array $items)
     {
         // Extract the Location Story-Tray ID from the user's location response.
@@ -259,7 +304,7 @@ class Location extends RequestCollection
             $sourceId = $locationFeed->getStory()->getId();
         }
         if (!strlen($sourceId)) {
-            throw new \InvalidArgumentException('Your provided LocationFeedResponse is invalid and does not contain any Location Story-Tray ID.');
+            throw new \InvalidArgumentException('Your provided LocationStoryResponse is invalid and does not contain any Location Story-Tray ID.');
         }
 
         // Ensure they only gave us valid items for this location response.
@@ -272,7 +317,7 @@ class Location extends RequestCollection
             // NOTE: We only check Items here. Other data is rejected by Internal.
             if ($item instanceof Response\Model\Item && !isset($validIds[$item->getId()])) {
                 throw new \InvalidArgumentException(sprintf(
-                    'The item with ID "%s" does not belong to this LocationFeedResponse.',
+                    'The item with ID "%s" does not belong to this LocationStoryResponse.',
                     $item->getId()
                 ));
             }

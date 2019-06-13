@@ -13,6 +13,7 @@
 - [ ] [Read the wiki](https://github.com/mgp25/Instagram-API/wiki)
 - [ ] [Reviewed the examples](https://github.com/mgp25/Instagram-API/tree/master/examples)
 - [ ] [Installed the api using ``composer``](https://github.com/mgp25/Instagram-API#installation)
+- [ ] [Using latest API release](https://github.com/mgp25/Instagram-API/releases)
 
 ### Purpose of your issue?
 - [ ] Bug report (encountered problems/errors)

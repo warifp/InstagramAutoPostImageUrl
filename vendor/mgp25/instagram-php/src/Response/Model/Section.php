@@ -5,11 +5,11 @@ namespace InstagramAPI\Response\Model;
 use InstagramAPI\AutoPropertyMapper;
 
 /**
- * TagSection.
+ * Section.
  *
  * @method ExploreItemInfo getExploreItemInfo()
  * @method string getFeedType()
- * @method TagLayoutContent getLayoutContent()
+ * @method LayoutContent getLayoutContent()
  * @method string getLayoutType()
  * @method bool isExploreItemInfo()
  * @method bool isFeedType()
@@ -17,18 +17,18 @@ use InstagramAPI\AutoPropertyMapper;
  * @method bool isLayoutType()
  * @method $this setExploreItemInfo(ExploreItemInfo $value)
  * @method $this setFeedType(string $value)
- * @method $this setLayoutContent(TagLayoutContent $value)
+ * @method $this setLayoutContent(LayoutContent $value)
  * @method $this setLayoutType(string $value)
  * @method $this unsetExploreItemInfo()
  * @method $this unsetFeedType()
  * @method $this unsetLayoutContent()
  * @method $this unsetLayoutType()
  */
-class TagSection extends AutoPropertyMapper
+class Section extends AutoPropertyMapper
 {
     const JSON_PROPERTY_MAP = [
         'layout_type'       => 'string',
-        'layout_content'    => 'TagLayoutContent',
+        'layout_content'    => 'LayoutContent',
         'feed_type'         => 'string',
         'explore_item_info' => 'ExploreItemInfo',
     ];

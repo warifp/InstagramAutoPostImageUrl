@@ -27,10 +27,6 @@ class Media extends RequestCollection
         $mediaId)
     {
         return $this->ig->request("media/{$mediaId}/info/")
-            ->addPost('_uuid', $this->ig->uuid)
-            ->addPost('_uid', $this->ig->account_id)
-            ->addPost('_csrftoken', $this->ig->client->getToken())
-            ->addPost('media_id', $mediaId)
             ->getResponse(new Response\MediaInfoResponse());
     }
 
@@ -39,7 +35,7 @@ class Media extends RequestCollection
      *
      * @param string     $mediaId   The media ID in Instagram's internal format (ie "3482384834_43294").
      * @param string|int $mediaType The type of the media item you are deleting. One of: "PHOTO", "VIDEO"
-     *                              "ALBUM", or the raw value of the Item's "getMediaType()" function.
+     *                              "CAROUSEL", or the raw value of the Item's "getMediaType()" function.
      *
      * @throws \InvalidArgumentException
      * @throws \InstagramAPI\Exception\InstagramException
@@ -54,10 +50,11 @@ class Media extends RequestCollection
 
         return $this->ig->request("media/{$mediaId}/delete/")
             ->addParam('media_type', $mediaType)
-            ->addPost('_uuid', $this->ig->uuid)
-            ->addPost('_uid', $this->ig->account_id)
-            ->addPost('_csrftoken', $this->ig->client->getToken())
+            ->addPost('igtv_feed_preview', false)
             ->addPost('media_id', $mediaId)
+            ->addPost('_csrftoken', $this->ig->client->getToken())
+            ->addPost('_uid', $this->ig->account_id)
+            ->addPost('_uuid', $this->ig->uuid)
             ->getResponse(new Response\MediaDeleteResponse());
     }
 
@@ -66,13 +63,13 @@ class Media extends RequestCollection
      *
      * @param string     $mediaId     The media ID in Instagram's internal format (ie "3482384834_43294").
      * @param string     $captionText Caption to use for the media.
-     * @param null|array $metadata    (optional) Associative array of optional metadata to edit:
+     * @param array|null $metadata    (optional) Associative array of optional metadata to edit:
      *                                "usertags" - special array with user tagging instructions,
      *                                if you want to modify the user tags;
      *                                "location" - a Location model object to set the media location,
      *                                or boolean FALSE to remove any location from the media.
      * @param string|int $mediaType   The type of the media item you are editing. One of: "PHOTO", "VIDEO"
-     *                                "ALBUM", or the raw value of the Item's "getMediaType()" function.
+     *                                "CAROUSEL", or the raw value of the Item's "getMediaType()" function.
      *
      * @throws \InvalidArgumentException
      * @throws \InstagramAPI\Exception\InstagramException
@@ -119,7 +116,7 @@ class Media extends RequestCollection
                     ->addPost('media_latitude', $metadata['location']->getLat())
                     ->addPost('media_longitude', $metadata['location']->getLng());
 
-                if ($mediaType === 'ALBUM') { // Albums need special handling.
+                if ($mediaType === 'CAROUSEL') { // Albums need special handling.
                     $request
                         ->addPost('exif_latitude', 0.0)
                         ->addPost('exif_longitude', 0.0);
@@ -159,7 +156,8 @@ class Media extends RequestCollection
             ->addPost('_csrftoken', $this->ig->client->getToken())
             ->addPost('media_id', $mediaId)
             ->addPost('radio_type', 'wifi-none')
-            ->addPost('module_name', $module);
+            ->addPost('module_name', $module)
+            ->addPost('device_id', $this->ig->device_id);
 
         $this->_parseLikeParameters('like', $request, $module, $extraData);
 
@@ -201,7 +199,7 @@ class Media extends RequestCollection
     /**
      * Get feed of your liked media.
      *
-     * @param null|string $maxId Next "maximum ID", used for pagination.
+     * @param string|null $maxId Next "maximum ID", used for pagination.
      *
      * @throws \InstagramAPI\Exception\InstagramException
      *
@@ -327,7 +325,8 @@ class Media extends RequestCollection
             ->addPost('_csrftoken', $this->ig->client->getToken())
             ->addPost('comment_text', $commentText)
             ->addPost('containermodule', $module)
-            ->addPost('radio_type', 'wifi-none');
+            ->addPost('radio_type', 'wifi-none')
+            ->addPost('device_id', $this->ig->device_id);
 
         if ($replyCommentId !== null) {
             if ($commentText[0] !== '@') {
@@ -625,7 +624,7 @@ class Media extends RequestCollection
     /**
      * Get saved media items feed.
      *
-     * @param null|string $maxId Next "maximum ID", used for pagination.
+     * @param string|null $maxId Next "maximum ID", used for pagination.
      *
      * @throws \InstagramAPI\Exception\InstagramException
      *

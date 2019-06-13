@@ -554,17 +554,17 @@
     },
     {
         "name": "mgp25/instagram-php",
-        "version": "v5.0.0",
-        "version_normalized": "5.0.0.0",
+        "version": "v6.0.1",
+        "version_normalized": "6.0.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/mgp25/Instagram-API.git",
-            "reference": "e3e07ec11ef5883ad6c0247c307ada317edb262f"
+            "reference": "e79acc05cd9d690f663a68da2b6a1549d3df29e7"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/mgp25/Instagram-API/zipball/e3e07ec11ef5883ad6c0247c307ada317edb262f",
-            "reference": "e3e07ec11ef5883ad6c0247c307ada317edb262f",
+            "url": "https://api.github.com/repos/mgp25/Instagram-API/zipball/e79acc05cd9d690f663a68da2b6a1549d3df29e7",
+            "reference": "e79acc05cd9d690f663a68da2b6a1549d3df29e7",
             "shasum": ""
         },
         "require": {
@@ -597,7 +597,7 @@
         "suggest": {
             "ext-event": "Installing PHP's native Event extension enables faster Realtime class event handling."
         },
-        "time": "2018-10-08T22:42:29+00:00",
+        "time": "2019-04-26T23:11:51+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

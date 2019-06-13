@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d1286942855aeb4cf88d843016419614",
+    "content-hash": "08f74dd450fe0e4a8cc60d9ea5a41aae",
     "packages": [
         {
             "name": "binsoul/net-mqtt",
@@ -541,16 +541,16 @@
         },
         {
             "name": "mgp25/instagram-php",
-            "version": "v5.0.0",
+            "version": "v6.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mgp25/Instagram-API.git",
-                "reference": "e3e07ec11ef5883ad6c0247c307ada317edb262f"
+                "reference": "e79acc05cd9d690f663a68da2b6a1549d3df29e7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mgp25/Instagram-API/zipball/e3e07ec11ef5883ad6c0247c307ada317edb262f",
-                "reference": "e3e07ec11ef5883ad6c0247c307ada317edb262f",
+                "url": "https://api.github.com/repos/mgp25/Instagram-API/zipball/e79acc05cd9d690f663a68da2b6a1549d3df29e7",
+                "reference": "e79acc05cd9d690f663a68da2b6a1549d3df29e7",
                 "shasum": ""
             },
             "require": {
@@ -613,7 +613,7 @@
                 "php",
                 "private"
             ],
-            "time": "2018-10-08T22:42:29+00:00"
+            "time": "2019-04-26T23:11:51+00:00"
         },
         {
             "name": "netresearch/jsonmapper",

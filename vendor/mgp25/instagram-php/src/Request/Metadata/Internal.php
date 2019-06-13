@@ -37,6 +37,9 @@ final class Internal
     /** @var string */
     private $_directUsers;
 
+    /** @var bool */
+    private $_bestieMedia;
+
     /**
      * Constructor.
      *
@@ -50,6 +53,7 @@ final class Internal
         } else {
             $this->_uploadId = Utils::generateUploadId();
         }
+        $this->_bestieMedia = false;
     }
 
     /**
@@ -227,5 +231,24 @@ final class Internal
     public function getDirectUsers()
     {
         return $this->_directUsers;
+    }
+
+    /**
+     * Set bestie media state.
+     *
+     * @param bool $bestieMedia
+     */
+    public function setBestieMedia(
+        $bestieMedia)
+    {
+        $this->_bestieMedia = $bestieMedia;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isBestieMedia()
+    {
+        return $this->_bestieMedia;
     }
 }

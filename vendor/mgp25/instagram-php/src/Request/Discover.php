@@ -14,7 +14,7 @@ class Discover extends RequestCollection
     /**
      * Get Explore tab feed.
      *
-     * @param null|string $maxId      Next "maximum ID", used for pagination.
+     * @param string|null $maxId      Next "maximum ID", used for pagination.
      * @param bool        $isPrefetch Whether this is the first fetch; we'll ignore maxId if TRUE.
      *
      * @throws \InstagramAPI\Exception\InstagramException

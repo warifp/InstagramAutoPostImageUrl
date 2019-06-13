@@ -38,8 +38,9 @@ $media = [ // Albums can contain between 2 and 10 photos/videos.
         */
     ],
     [
-        'type'     => 'video',
-        'file'     => '', // Path to the video file.
+        'type'                => 'video',
+        'file'                => '', // Path to the video file.
+        'thumbnail_timestamp' => '', // Timestamp of thumbnail
     ],
 ];
 $captionText = ''; // Caption to use for the album.

@@ -71,12 +71,15 @@ class Business extends RequestCollection
             ->addPost('variables', json_encode([
                 'IgInsightsGridMediaImage_SIZE' => 240,
                 'timezone'                      => 'Atlantic/Canary',
+                'activityTab'                   => true,
+                'audienceTab'                   => true,
+                'contentTab'                    => true,
                 'query_params'                  => json_encode([
                     'access_token'  => '',
                     'id'            => $this->ig->account_id,
                 ]),
             ]))
-            ->addPost('doc_id', '2300767026607614')
+            ->addPost('doc_id', '1926322010754880')
             ->getResponse(new Response\GraphqlResponse());
     }
 }

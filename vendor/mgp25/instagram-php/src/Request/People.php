@@ -135,7 +135,7 @@ class People extends RequestCollection
      * This feed has information about the people you follow, such as what posts
      * they've liked or that they've started following other people.
      *
-     * @param null|string $maxId Next "maximum ID", used for pagination.
+     * @param string|null $maxId Next "maximum ID", used for pagination.
      *
      * @throws \InstagramAPI\Exception\InstagramException
      *
@@ -327,8 +327,8 @@ class People extends RequestCollection
      *
      * @param string      $userId      Numerical UserPK ID.
      * @param string      $rankToken   The list UUID. You must use the same value for all pages of the list.
-     * @param null|string $searchQuery Limit the userlist to ones matching the query.
-     * @param null|string $maxId       Next "maximum ID", used for pagination.
+     * @param string|null $searchQuery Limit the userlist to ones matching the query.
+     * @param string|null $maxId       Next "maximum ID", used for pagination.
      *
      * @throws \InvalidArgumentException
      * @throws \InstagramAPI\Exception\InstagramException
@@ -346,6 +346,7 @@ class People extends RequestCollection
     {
         Utils::throwIfInvalidRankToken($rankToken);
         $request = $this->ig->request("friendships/{$userId}/following/")
+            ->addParam('includes_hashtags', true)
             ->addParam('rank_token', $rankToken);
         if ($searchQuery !== null) {
             $request->addParam('query', $searchQuery);
@@ -362,8 +363,8 @@ class People extends RequestCollection
      *
      * @param string      $userId      Numerical UserPK ID.
      * @param string      $rankToken   The list UUID. You must use the same value for all pages of the list.
-     * @param null|string $searchQuery Limit the userlist to ones matching the query.
-     * @param null|string $maxId       Next "maximum ID", used for pagination.
+     * @param string|null $searchQuery Limit the userlist to ones matching the query.
+     * @param string|null $maxId       Next "maximum ID", used for pagination.
      *
      * @throws \InvalidArgumentException
      * @throws \InstagramAPI\Exception\InstagramException
@@ -396,8 +397,8 @@ class People extends RequestCollection
      * Get list of who you are following.
      *
      * @param string      $rankToken   The list UUID. You must use the same value for all pages of the list.
-     * @param null|string $searchQuery Limit the userlist to ones matching the query.
-     * @param null|string $maxId       Next "maximum ID", used for pagination.
+     * @param string|null $searchQuery Limit the userlist to ones matching the query.
+     * @param string|null $maxId       Next "maximum ID", used for pagination.
      *
      * @throws \InstagramAPI\Exception\InstagramException
      *
@@ -418,8 +419,8 @@ class People extends RequestCollection
      * Get list of your own followers.
      *
      * @param string      $rankToken   The list UUID. You must use the same value for all pages of the list.
-     * @param null|string $searchQuery Limit the userlist to ones matching the query.
-     * @param null|string $maxId       Next "maximum ID", used for pagination.
+     * @param string|null $searchQuery Limit the userlist to ones matching the query.
+     * @param string|null $maxId       Next "maximum ID", used for pagination.
      *
      * @throws \InstagramAPI\Exception\InstagramException
      *
@@ -489,13 +490,136 @@ class People extends RequestCollection
     }
 
     /**
+     * Get business account details.
+     *
+     * @param string $userId Numerical UserPK ID.
+     *
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\AccountDetailsResponse
+     */
+    public function getAccountDetails(
+        $userId)
+    {
+        return $this->ig->request("users/{$userId}/account_details/")
+            ->getResponse(new Response\AccountDetailsResponse());
+    }
+
+    /**
+     * Get a business account's former username(s).
+     *
+     * @param string $userId Numerical UserPK ID.
+     *
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\FormerUsernamesResponse
+     */
+    public function getFormerUsernames(
+        $userId)
+    {
+        return $this->ig->request("users/{$userId}/former_usernames/")
+            ->getResponse(new Response\FormerUsernamesResponse());
+    }
+
+    /**
+     * Get a business account's shared follower base with similar accounts.
+     *
+     * @param string $userId Numerical UserPk ID.
+     *
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\SharedFollowersResponse
+     */
+    public function getSharedFollowers(
+        $userId)
+    {
+        return $this->ig->request("users/{$userId}/shared_follower_accounts/")
+            ->getResponse(new Response\SharedFollowersResponse());
+    }
+
+    /**
+     * Get a business account's active ads on feed.
+     *
+     * @param string      $targetUserId Numerical UserPk ID.
+     * @param string|null $maxId        Next "maximum ID", used for pagination.
+     *
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\ActiveFeedAdsResponse
+     */
+    public function getActiveFeedAds(
+        $targetUserId,
+        $maxId = null)
+    {
+        return $this->_getActiveAds($targetUserId, '35', $maxId);
+    }
+
+    /**
+     * Get a business account's active ads on stories.
+     *
+     * @param string      $targetUserId Numerical UserPk ID.
+     * @param string|null $maxId        Next "maximum ID", used for pagination.
+     *
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\ActiveReelAdsResponse
+     */
+    public function getActiveStoryAds(
+        $targetUserId,
+        $maxId = null)
+    {
+        return $this->_getActiveAds($targetUserId, '49', $maxId);
+    }
+
+    /**
+     * Helper function for getting active ads for business accounts.
+     *
+     * @param string      $targetUserId Numerical UserPk ID.
+     * @param string      $pageType     Content-type id(?) of the ad. 35 is feed ads and 49 is story ads.
+     * @param string|null $maxId        Next "maximum ID", used for pagination.
+     *
+     * @throws \InvalidArgumentException
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return Response
+     */
+    protected function _getActiveAds(
+        $targetUserId,
+        $pageType,
+        $maxId = null)
+    {
+        $request = $this->ig->request('ads/view_ads/')
+            ->setSignedPost(false)
+            ->addPost('_csrftoken', $this->ig->client->getToken())
+            ->addPost('_uuid', $this->ig->uuid)
+            ->addPost('target_user_id', $targetUserId)
+            ->addPost('page_type', $pageType);
+        if ($maxId !== null) {
+            $request->addPost('next_max_id', $maxId);
+        }
+        $request->addPost('ig_user_id', $this->ig->account_id);
+
+        switch ($pageType) {
+            case '35':
+                return $request->getResponse(new Response\ActiveFeedAdsResponse());
+                break;
+            case '49':
+                return $request->getResponse(new Response\ActiveReelAdsResponse());
+                break;
+            default:
+                throw new \InvalidArgumentException('Invalid page type.');
+        }
+    }
+
+    /**
      * Search for users by linking your address book to Instagram.
      *
      * WARNING: You must unlink your current address book before you can link
      * another one to search again, otherwise you will just keep getting the
      * same response about your currently linked address book every time!
      *
-     * @param array $contacts
+     * @param array  $contacts
+     * @param string $module
      *
      * @throws \InstagramAPI\Exception\InstagramException
      *
@@ -504,13 +628,18 @@ class People extends RequestCollection
      * @see People::unlinkAddressBook()
      */
     public function linkAddressBook(
-        array $contacts)
+        array $contacts,
+        $module = 'find_friends_contacts')
     {
         return $this->ig->request('address_book/link/')
+            ->setIsBodyCompressed(true)
             ->setSignedPost(false)
+            ->addPost('phone_id', $this->ig->phone_id)
+            ->addPost('module', $module)
             ->addPost('contacts', json_encode($contacts))
-            ->addPost('_uuid', $this->ig->uuid)
             ->addPost('_csrftoken', $this->ig->client->getToken())
+            ->addPost('device_id', $this->ig->device_id)
+            ->addPost('_uuid', $this->ig->uuid)
             ->getResponse(new Response\LinkAddressBookResponse());
     }
 
@@ -536,7 +665,7 @@ class People extends RequestCollection
      * This matches you with other people using multiple algorithms such as
      * "friends of friends", "location", "people using similar hashtags", etc.
      *
-     * @param null|string $maxId Next "maximum ID", used for pagination.
+     * @param string|null $maxId Next "maximum ID", used for pagination.
      *
      * @throws \InstagramAPI\Exception\InstagramException
      *
@@ -656,6 +785,7 @@ class People extends RequestCollection
             ->addPost('_csrftoken', $this->ig->client->getToken())
             ->addPost('user_id', $userId)
             ->addPost('radio_type', 'wifi-none')
+            ->addPost('device_id', $this->ig->device_id)
             ->getResponse(new Response\FriendshipResponse());
     }
 
@@ -918,7 +1048,7 @@ class People extends RequestCollection
     /**
      * Get a list of all blocked users.
      *
-     * @param null|string $maxId Next "maximum ID", used for pagination.
+     * @param string|null $maxId Next "maximum ID", used for pagination.
      *
      * @throws \InstagramAPI\Exception\InstagramException
      *
@@ -1041,5 +1171,63 @@ class People extends RequestCollection
             ->addPost('_uid', $this->ig->account_id)
             ->addPost('_csrftoken', $this->ig->client->getToken())
             ->getResponse(new Response\FriendshipResponse());
+    }
+
+    /**
+     * Get the list of users on your close friends list.
+     *
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\CloseFriendsResponse
+     */
+    public function getCloseFriends()
+    {
+        return $this->ig->request('friendships/besties/')
+            ->getResponse(new Response\CloseFriendsResponse());
+    }
+
+    /**
+     * Get the list of suggested users for your close friends list.
+     *
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\CloseFriendsResponse
+     */
+    public function getSuggestedCloseFriends()
+    {
+        return $this->ig->request('friendships/bestie_suggestions/')
+            ->getResponse(new Response\CloseFriendsResponse());
+    }
+
+    /**
+     * Add or Remove users from your close friends list.
+     *
+     * Note: You probably shouldn't touch $module and $source as there is only one way to modify your close friends.
+     *
+     * @param array  $add    Users to add to your close friends list.
+     * @param array  $remove Users to remove from your close friends list.
+     * @param string $module (optional) From which app module (page) you have change your close friends list.
+     * @param string $source (optional) Source page of app-module of where you changed your close friends list.
+     *
+     * @throws \InstagramAPI\Exception\InstagramException
+     *
+     * @return \InstagramAPI\Response\GenericResponse
+     */
+    public function setCloseFriends(
+        array $add,
+        array $remove,
+        $module = 'favorites_home_list',
+        $source = 'audience_manager')
+    {
+        return $this->ig->request('friendships/set_besties/')
+            ->setSignedPost(true)
+            ->addPost('module', $module)
+            ->addPost('source', $source)
+            ->addPost('_csrftoken', $this->ig->client->getToken())
+            ->addPost('_uid', $this->ig->account_id)
+            ->addPost('_uuid', $this->ig->uuid)
+            ->addPost('remove', $remove)
+            ->addPost('add', $add)
+            ->getResponse(new Response\GenericResponse());
     }
 }

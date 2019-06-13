@@ -9,6 +9,7 @@ use InstagramAPI\AutoPropertyMapper;
  *
  * @method string getAlgorithm()
  * @method mixed getCaption()
+ * @method bool getFollowedBy()
  * @method mixed getIcon()
  * @method bool getIsNewSuggestion()
  * @method mixed getLargeUrls()
@@ -21,6 +22,7 @@ use InstagramAPI\AutoPropertyMapper;
  * @method float getValue()
  * @method bool isAlgorithm()
  * @method bool isCaption()
+ * @method bool isFollowedBy()
  * @method bool isIcon()
  * @method bool isIsNewSuggestion()
  * @method bool isLargeUrls()
@@ -33,6 +35,7 @@ use InstagramAPI\AutoPropertyMapper;
  * @method bool isValue()
  * @method $this setAlgorithm(string $value)
  * @method $this setCaption(mixed $value)
+ * @method $this setFollowedBy(bool $value)
  * @method $this setIcon(mixed $value)
  * @method $this setIsNewSuggestion(bool $value)
  * @method $this setLargeUrls(mixed $value)
@@ -45,6 +48,7 @@ use InstagramAPI\AutoPropertyMapper;
  * @method $this setValue(float $value)
  * @method $this unsetAlgorithm()
  * @method $this unsetCaption()
+ * @method $this unsetFollowedBy()
  * @method $this unsetIcon()
  * @method $this unsetIsNewSuggestion()
  * @method $this unsetLargeUrls()
@@ -71,5 +75,6 @@ class UserCard extends AutoPropertyMapper
         'value'             => 'float',
         'is_new_suggestion' => 'bool',
         'uuid'              => 'string',
+        'followed_by'       => 'bool',
     ];
 }

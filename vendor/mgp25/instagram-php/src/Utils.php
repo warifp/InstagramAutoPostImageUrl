@@ -736,6 +736,195 @@ class Utils
     }
 
     /**
+     * Verifies an array of story slider.
+     *
+     * @param array[] $storySlider Array with story slider key-value pairs.
+     *
+     * @throws \InvalidArgumentException If it's missing keys or has invalid values.
+     */
+    public static function throwIfInvalidStorySlider(
+        array $storySlider)
+    {
+        $requiredKeys = ['question', 'viewer_vote', 'viewer_can_vote', 'slider_vote_average', 'slider_vote_count', 'emoji', 'background_color', 'text_color', 'is_sticker'];
+
+        if (count($storySlider) !== 1) {
+            throw new \InvalidArgumentException(sprintf('Only one story slider is permitted. You added %d story sliders.', count($storySlider)));
+        }
+
+        // Ensure that all keys exist.
+        $missingKeys = array_keys(array_diff_key(['question' => 1, 'viewer_vote' => 1, 'viewer_can_vote' => 1, 'slider_vote_average' => 1, 'slider_vote_count' => 1, 'emoji' => 1, 'background_color' => 1, 'text_color' => 1, 'is_sticker' => 1], $storySlider[0]));
+        if (count($missingKeys)) {
+            throw new \InvalidArgumentException(sprintf('Missing keys "%s" for story slider array.', implode(', ', $missingKeys)));
+        }
+
+        foreach ($storySlider[0] as $k => $v) {
+            switch ($k) {
+                case 'question':
+                    if (!is_string($v)) {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story slider array-key "%s".', $v, $k));
+                    }
+                    break;
+                case 'viewer_vote':
+                case 'slider_vote_count':
+                case 'slider_vote_average':
+                    if ($v !== 0) {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story slider array-key "%s".', $v, $k));
+                    }
+                    break;
+                case 'background_color':
+                case 'text_color':
+                    if (!preg_match('/^[0-9a-fA-F]{6}$/', substr($v, 1))) {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story slider array-key "%s".', $v, $k));
+                    }
+                    break;
+                case 'emoji':
+                    //TODO REQUIRES EMOJI VALIDATION
+                    break;
+                case 'viewer_can_vote':
+                    if (!is_bool($v) && $v !== false) {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story poll array-key "%s".', $v, $k));
+                    }
+                    break;
+                case 'is_sticker':
+                    if (!is_bool($v) && $v !== true) {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story poll array-key "%s".', $v, $k));
+                    }
+                    break;
+            }
+        }
+        self::_throwIfInvalidStoryStickerPlacement(array_diff_key($storySlider[0], array_flip($requiredKeys)), 'sliders');
+    }
+
+    /**
+     * Verifies an array of story question.
+     *
+     * @param array $storyQuestion Array with story question key-value pairs.
+     *
+     * @throws \InvalidArgumentException If it's missing keys or has invalid values.
+     */
+    public static function throwIfInvalidStoryQuestion(
+        array $storyQuestion)
+    {
+        $requiredKeys = ['z', 'viewer_can_interact', 'background_color', 'profile_pic_url', 'question_type', 'question', 'text_color', 'is_sticker'];
+
+        if (count($storyQuestion) !== 1) {
+            throw new \InvalidArgumentException(sprintf('Only one story question is permitted. You added %d story questions.', count($storyQuestion)));
+        }
+
+        // Ensure that all keys exist.
+        $missingKeys = array_keys(array_diff_key(['viewer_can_interact' => 1, 'background_color' => 1, 'profile_pic_url' => 1, 'question_type' => 1, 'question' => 1, 'text_color' => 1, 'is_sticker' => 1], $storyQuestion[0]));
+        if (count($missingKeys)) {
+            throw new \InvalidArgumentException(sprintf('Missing keys "%s" for story question array.', implode(', ', $missingKeys)));
+        }
+
+        foreach ($storyQuestion[0] as $k => $v) {
+            switch ($k) {
+                case 'z': // May be used for AR in the future, for now it's always 0.
+                    if ($v !== 0) {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story question array-key "%s".', $v, $k));
+                    }
+                    break;
+                case 'viewer_can_interact':
+                    if (!is_bool($v) || $v !== false) {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story question array-key "%s".', $v, $k));
+                    }
+                    break;
+                case 'background_color':
+                case 'text_color':
+                    if (!preg_match('/^[0-9a-fA-F]{6}$/', substr($v, 1))) {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story question array-key "%s".', $v, $k));
+                    }
+                    break;
+                case 'question_type':
+                    // At this time only text questions are supported.
+                    if (!is_string($v) || $v !== 'text') {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story question array-key "%s".', $v, $k));
+                    }
+                    break;
+                case 'question':
+                    if (!is_string($v)) {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story question array-key "%s".', $v, $k));
+                    }
+                    break;
+                case 'profile_pic_url':
+                    if (!self::hasValidWebURLSyntax($v)) {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story question array-key "%s".', $v, $k));
+                    }
+                    break;
+                case 'is_sticker':
+                    if (!is_bool($v) && $v !== true) {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story question array-key "%s".', $v, $k));
+                    }
+                    break;
+            }
+        }
+        self::_throwIfInvalidStoryStickerPlacement(array_diff_key($storyQuestion[0], array_flip($requiredKeys)), 'questions');
+    }
+
+    /**
+     * Verifies an array of story countdown.
+     *
+     * @param array $storyCountdown Array with story countdown key-value pairs.
+     *
+     * @throws \InvalidArgumentException If it's missing keys or has invalid values.
+     */
+    public static function throwIfInvalidStoryCountdown(
+        array $storyCountdown)
+    {
+        $requiredKeys = ['z', 'text', 'text_color', 'start_background_color', 'end_background_color', 'digit_color', 'digit_card_color', 'end_ts', 'following_enabled', 'is_sticker'];
+
+        if (count($storyCountdown) !== 1) {
+            throw new \InvalidArgumentException(sprintf('Only one story countdown is permitted. You added %d story countdowns.', count($storyCountdown)));
+        }
+
+        // Ensure that all keys exist.
+        $missingKeys = array_keys(array_diff_key(['z' => 1, 'text' => 1, 'text_color' => 1, 'start_background_color' => 1, 'end_background_color' => 1, 'digit_color' => 1, 'digit_card_color' => 1, 'end_ts' => 1, 'following_enabled' => 1, 'is_sticker' => 1], $storyCountdown[0]));
+        if (count($missingKeys)) {
+            throw new \InvalidArgumentException(sprintf('Missing keys "%s" for story countdown array.', implode(', ', $missingKeys)));
+        }
+
+        foreach ($storyCountdown[0] as $k => $v) {
+            switch ($k) {
+                case 'z': // May be used for AR in the future, for now it's always 0.
+                    if ($v !== 0) {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story countdown array-key "%s".', $v, $k));
+                    }
+                    break;
+                case 'text':
+                    if (!is_string($v)) {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story countdown array-key "%s".', $v, $k));
+                    }
+                    break;
+                case 'text_color':
+                case 'start_background_color':
+                case 'end_background_color':
+                case 'digit_color':
+                case 'digit_card_color':
+                    if (!preg_match('/^[0-9a-fA-F]{6}$/', substr($v, 1))) {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story countdown array-key "%s".', $v, $k));
+                    }
+                    break;
+                case 'end_ts':
+                    if (!is_int($v)) {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story countdown array-key "%s".', $v, $k));
+                    }
+                    break;
+                case 'following_enabled':
+                    if (!is_bool($v)) {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story countdown array-key "%s".', $v, $k));
+                    }
+                    break;
+                case 'is_sticker':
+                    if (!is_bool($v) && $v !== true) {
+                        throw new \InvalidArgumentException(sprintf('Invalid value "%s" for story countdown array-key "%s".', $v, $k));
+                    }
+                    break;
+            }
+        }
+        self::_throwIfInvalidStoryStickerPlacement(array_diff_key($storyCountdown[0], array_flip($requiredKeys)), 'countdowns');
+    }
+
+    /**
      * Verifies if tallies are valid.
      *
      * @param array[] $tallies Array with story poll key-value pairs.
@@ -978,11 +1167,11 @@ class Utils
      * Checks and validates a media item's type.
      *
      * @param string|int $mediaType The type of the media item. One of: "PHOTO", "VIDEO"
-     *                              "ALBUM", or the raw value of the Item's "getMediaType()" function.
+     *                              "CAROUSEL", or the raw value of the Item's "getMediaType()" function.
      *
      * @throws \InvalidArgumentException If the type is invalid.
      *
-     * @return string The verified final type; either "PHOTO", "VIDEO" or "ALBUM".
+     * @return string The verified final type; either "PHOTO", "VIDEO" or "CAROUSEL".
      */
     public static function checkMediaType(
         $mediaType)
@@ -992,11 +1181,11 @@ class Utils
                 $mediaType = 'PHOTO';
             } elseif ($mediaType == Item::VIDEO) {
                 $mediaType = 'VIDEO';
-            } elseif ($mediaType == Item::ALBUM) {
-                $mediaType = 'ALBUM';
+            } elseif ($mediaType == Item::CAROUSEL) {
+                $mediaType = 'CAROUSEL';
             }
         }
-        if (!in_array($mediaType, ['PHOTO', 'VIDEO', 'ALBUM'], true)) {
+        if (!in_array($mediaType, ['PHOTO', 'VIDEO', 'CAROUSEL'], true)) {
             throw new \InvalidArgumentException(sprintf('"%s" is not a valid media type.', $mediaType));
         }
 

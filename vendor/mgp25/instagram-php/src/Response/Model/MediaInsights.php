@@ -7,24 +7,44 @@ use InstagramAPI\AutoPropertyMapper;
 /**
  * MediaInsights.
  *
- * @method mixed getEngagementCount()
- * @method mixed getImpressionCount()
+ * @method int getAvgEngagementCount()
+ * @method int getCommentCount()
+ * @method int getEngagementCount()
+ * @method int getImpressionCount()
+ * @method int getLikeCount()
  * @method string[] getReachCount()
+ * @method int getSaveCount()
+ * @method bool isAvgEngagementCount()
+ * @method bool isCommentCount()
  * @method bool isEngagementCount()
  * @method bool isImpressionCount()
+ * @method bool isLikeCount()
  * @method bool isReachCount()
- * @method $this setEngagementCount(mixed $value)
- * @method $this setImpressionCount(mixed $value)
+ * @method bool isSaveCount()
+ * @method $this setAvgEngagementCount(int $value)
+ * @method $this setCommentCount(int $value)
+ * @method $this setEngagementCount(int $value)
+ * @method $this setImpressionCount(int $value)
+ * @method $this setLikeCount(int $value)
  * @method $this setReachCount(string[] $value)
+ * @method $this setSaveCount(int $value)
+ * @method $this unsetAvgEngagementCount()
+ * @method $this unsetCommentCount()
  * @method $this unsetEngagementCount()
  * @method $this unsetImpressionCount()
+ * @method $this unsetLikeCount()
  * @method $this unsetReachCount()
+ * @method $this unsetSaveCount()
  */
 class MediaInsights extends AutoPropertyMapper
 {
     const JSON_PROPERTY_MAP = [
-        'reach_count'      => 'string[]',
-        'impression_count' => '',
-        'engagement_count' => '',
+        'reach_count'          => 'string[]',
+        'impression_count'     => 'int',
+        'engagement_count'     => 'int',
+        'avg_engagement_count' => 'int',
+        'comment_count'        => 'int',
+        'save_count'           => 'int',
+        'like_count'           => 'int',
     ];
 }

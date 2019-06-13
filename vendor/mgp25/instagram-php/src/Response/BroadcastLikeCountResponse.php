@@ -8,7 +8,7 @@ use InstagramAPI\Response;
  * BroadcastLikeCountResponse.
  *
  * @method int getBurstLikes()
- * @method int getLikeTs()
+ * @method string getLikeTs()
  * @method Model\User[] getLikers()
  * @method int getLikes()
  * @method mixed getMessage()
@@ -22,7 +22,7 @@ use InstagramAPI\Response;
  * @method bool isStatus()
  * @method bool is_Messages()
  * @method $this setBurstLikes(int $value)
- * @method $this setLikeTs(int $value)
+ * @method $this setLikeTs(string $value)
  * @method $this setLikers(Model\User[] $value)
  * @method $this setLikes(int $value)
  * @method $this setMessage(mixed $value)
@@ -39,7 +39,7 @@ use InstagramAPI\Response;
 class BroadcastLikeCountResponse extends Response
 {
     const JSON_PROPERTY_MAP = [
-        'like_ts'     => 'int',
+        'like_ts'     => 'string',
         'likes'       => 'int',
         'burst_likes' => 'int',
         'likers'      => 'Model\User[]',

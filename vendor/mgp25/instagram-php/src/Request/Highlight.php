@@ -29,6 +29,11 @@ class Highlight extends RequestCollection
         $userId)
     {
         return $this->ig->request("highlights/{$userId}/highlights_tray/")
+            ->addParam('supported_capabilities_new', json_encode(Constants::SUPPORTED_CAPABILITIES))
+            ->addParam('phone_id', $this->ig->phone_id)
+            ->addParam('battery_level', '100')
+            ->addParam('is_charging', '1')
+            ->addParam('will_sound_on', '1')
             ->getResponse(new Response\HighlightFeedResponse());
     }
 
@@ -37,6 +42,7 @@ class Highlight extends RequestCollection
      *
      * NOTE: Sometimes, a highlight doesn't have any `items` property. Read
      * `Highlight::getUserFeed()` for more information about what to do.
+     * Note 2: if user has a igtv post reponse will include 'tv_channel' property
      *
      * @throws \InstagramAPI\Exception\InstagramException
      *
@@ -55,7 +61,7 @@ class Highlight extends RequestCollection
      *
      * @param string[]    $mediaIds     Array with one or more media IDs in Instagram's internal format (ie ["3482384834_43294"]).
      * @param string      $title        Title for the highlight.
-     * @param null|string $coverMediaId One media ID in Instagram's internal format (ie "3482384834_43294").
+     * @param string|null $coverMediaId One media ID in Instagram's internal format (ie "3482384834_43294").
      * @param string      $module
      *
      * @throws \InvalidArgumentException
@@ -82,9 +88,8 @@ class Highlight extends RequestCollection
         }
 
         $cover = [
-                    'media_id'  => $coverMediaId,
-                    'crop_rect' => '[0.0,0.21818182,1.0,0.7801653]',
-                ];
+            'media_id'  => $coverMediaId,
+        ];
 
         return $this->ig->request('highlights/create_reel/')
             ->addPost('supported_capabilities_new', json_encode(Constants::SUPPORTED_CAPABILITIES))
@@ -131,9 +136,8 @@ class Highlight extends RequestCollection
             $params['remove_media'] = [];
         }
         $cover = [
-                    'media_id'  => $params['cover_media_id'],
-                    'crop_rect' => '[0.0,0.21854913,1.0,0.7805326]',
-                ];
+            'media_id'  => $params['cover_media_id'],
+        ];
 
         return $this->ig->request("highlights/{$highlightReelId}/edit_reel/")
             ->addPost('supported_capabilities_new', json_encode(Constants::SUPPORTED_CAPABILITIES))

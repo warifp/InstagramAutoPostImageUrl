@@ -88,7 +88,7 @@ class Usertag extends RequestCollection
      * Get user taggings for a user.
      *
      * @param string      $userId Numerical UserPK ID.
-     * @param null|string $maxId  Next "maximum ID", used for pagination.
+     * @param string|null $maxId  Next "maximum ID", used for pagination.
      *
      * @throws \InstagramAPI\Exception\InstagramException
      *
@@ -110,7 +110,7 @@ class Usertag extends RequestCollection
     /**
      * Get user taggings for your own account.
      *
-     * @param null|string $maxId Next "maximum ID", used for pagination.
+     * @param string|null $maxId Next "maximum ID", used for pagination.
      *
      * @throws \InstagramAPI\Exception\InstagramException
      *

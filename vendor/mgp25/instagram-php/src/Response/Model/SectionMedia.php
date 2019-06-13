@@ -5,14 +5,14 @@ namespace InstagramAPI\Response\Model;
 use InstagramAPI\AutoPropertyMapper;
 
 /**
- * TagMedia.
+ * SectionMedia.
  *
  * @method Item getMedia()
  * @method bool isMedia()
  * @method $this setMedia(Item $value)
  * @method $this unsetMedia()
  */
-class TagMedia extends AutoPropertyMapper
+class SectionMedia extends AutoPropertyMapper
 {
     const JSON_PROPERTY_MAP = [
         'media'  => 'Item',

@@ -81,10 +81,10 @@ try {
         $systemComments = $commentsResponse->getSystemComments();
         $comments = $commentsResponse->getComments();
         if (!empty($systemComments)) {
-            $lastCommentTs = end($systemComments)->getCreatedAt();
+            $lastCommentTs = $systemComments[0]->getCreatedAt();
         }
-        if (!empty($comments) && end($comments)->getCreatedAt() > $lastCommentTs) {
-            $lastCommentTs = end($comments)->getCreatedAt();
+        if (!empty($comments) && $comments[0]->getCreatedAt() > $lastCommentTs) {
+            $lastCommentTs = $comments[0]->getCreatedAt();
         }
 
         // Get broadcast heartbeat and viewer count.

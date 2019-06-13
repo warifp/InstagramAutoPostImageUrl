@@ -16,7 +16,7 @@ use InstagramAPI\Response;
  * @method int getNextPage()
  * @method int getNumResults()
  * @method Model\Item[] getRankedItems()
- * @method Model\TagSection[] getSections()
+ * @method Model\Section[] getSections()
  * @method string getStatus()
  * @method Model\StoryTray getStory()
  * @method Model\_Message[] get_Messages()
@@ -42,7 +42,7 @@ use InstagramAPI\Response;
  * @method $this setNextPage(int $value)
  * @method $this setNumResults(int $value)
  * @method $this setRankedItems(Model\Item[] $value)
- * @method $this setSections(Model\TagSection[] $value)
+ * @method $this setSections(Model\Section[] $value)
  * @method $this setStatus(string $value)
  * @method $this setStory(Model\StoryTray $value)
  * @method $this set_Messages(Model\_Message[] $value)
@@ -63,7 +63,7 @@ use InstagramAPI\Response;
 class TagFeedResponse extends Response
 {
     const JSON_PROPERTY_MAP = [
-        'sections'               => 'Model\TagSection[]',
+        'sections'               => 'Model\Section[]',
         'num_results'            => 'int',
         'ranked_items'           => 'Model\Item[]',
         'auto_load_more_enabled' => 'bool',

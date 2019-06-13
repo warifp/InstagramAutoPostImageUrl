@@ -21,6 +21,9 @@ class FFmpeg
     /** @var string|null */
     public static $defaultBinary;
 
+    /** @var int|null */
+    public static $defaultTimeout;
+
     /** @var FFmpeg[] */
     protected static $_instances = [];
 
@@ -118,6 +121,9 @@ class FFmpeg
         $fullCommand = sprintf('%s -v error %s', Args::escape($this->_ffmpegBinary), $command);
 
         $process = new Process($fullCommand);
+        if (is_int(self::$defaultTimeout) && self::$defaultTimeout > 60) {
+            $process->setTimeout(self::$defaultTimeout);
+        }
         $process->start();
 
         return $process;

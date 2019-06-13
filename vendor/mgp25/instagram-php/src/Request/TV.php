@@ -32,7 +32,7 @@ class TV extends RequestCollection
      * and using a user ID in the following format: 'user_1234567891'.
      *
      * @param string      $id    ID used to filter channels.
-     * @param null|string $maxId Next "maximum ID", used for pagination.
+     * @param string|null $maxId Next "maximum ID", used for pagination.
      *
      * @throws \InvalidArgumentException
      * @throws \InstagramAPI\Exception\InstagramException

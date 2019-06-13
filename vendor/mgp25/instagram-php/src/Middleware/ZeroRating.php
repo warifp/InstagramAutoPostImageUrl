@@ -57,7 +57,9 @@ class ZeroRating
             if ($test === false) {
                 continue;
             }
-            $this->_rules[$regex] = $to;
+            $this->_rules[$regex] = strtr($to, [
+                '\.' => '.',
+            ]);
         }
     }
 
